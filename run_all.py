@@ -80,6 +80,12 @@ def run_titanic_classification():
             optimizer.step()
         logging.info(f"Epoch {epoch+1}/{epochs} completed.")
 
+    model_dir = "models"
+    os.makedirs(model_dir, exist_ok=True)
+    model_path = os.path.join(model_dir, "titanic_logistic_regression.pt")
+    torch.save(model.state_dict(), model_path)
+    logging.info(f"Модель сохранена в {model_path}")
+
     model.eval()
     all_preds = []
     all_targets = []

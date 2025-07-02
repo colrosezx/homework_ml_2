@@ -1,4 +1,5 @@
 import torch
+import os
 import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
 import torch.optim as optim
@@ -64,6 +65,12 @@ def run_experiment(learning_rates, batch_sizes, optimizers, dataset):
                         val_loss = sum(criterion(model(X_batch).squeeze(), y_batch.float()).item() for X_batch, y_batch in val_loader) / len(val_loader)
                         val_losses.append(val_loss)
 
+                model_dir = "models"
+                os.makedirs(model_dir, exist_ok=True)
+                model_path = os.path.join(model_dir, f"linear_regression_lr{lr}_bs{batch_size}_{opt_name}.pt")
+                torch.save(model.state_dict(), model_path)
+                logging.info(f"Модель сохранена в {model_path}")
+                
                 results.append({
                     'lr': lr,
                     'batch_size': batch_size,
